@@ -13,6 +13,10 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
+        //first I create a new list which will become the length that is indicated by the user.
+        // Then I make a for loop that will loop over the 
+        for(int i = 0);
+
         return []; // replace this return statement with your own
     }
 
