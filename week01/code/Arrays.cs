@@ -40,7 +40,8 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person..
 
-        //I create a for loop that will iterate over the list. I will remove the last amount of items and then insert them at the beginning.
+        //I create a for loop that will iterate over the list. I will store the last index in a temp variable.
+        //Then I'll remove the item at the last index then insert them one at a time at the beginning of the list.
 
         for(int j = 0; j < amount; j++)
         {
