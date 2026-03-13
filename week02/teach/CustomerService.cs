@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿using System.Security.Cryptography;
+
+/// <summary>
 /// Maintain a Customer Service Queue.  Allows new customers to be 
 /// added and allows customers to be serviced.
 /// </summary>
@@ -11,24 +13,56 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
-        Console.WriteLine("Test 1");
+        // Scenario: Is the default size 10?
+        // Expected Result: Size is 0 max_size is 10
+        var queue1 = new CustomerService(0);
+        Console.WriteLine(queue1);
 
-        // Defect(s) Found: 
+        // Defect(s) Found: None
 
         Console.WriteLine("=================");
 
-        // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // // Test 2
+        // // Scenario: Maxsize being 5, can I add 6 customers? 
+        // // Expected Result: Error should be printed saying that the Queue is at capacity.
         Console.WriteLine("Test 2");
-
-        // Defect(s) Found: 
+        var queue2 = new CustomerService(5);
+        queue2.AddNewCustomer();
+        queue2.AddNewCustomer();
+        queue2.AddNewCustomer();
+        queue2.AddNewCustomer();
+        queue2.AddNewCustomer();
+        queue2.AddNewCustomer();
+        Console.WriteLine(queue2);
+        // // Defect(s) Found: I had to add '=' to the AddNewCustomer confirmation of the max limit
 
         Console.WriteLine("=================");
 
         // Add more Test Cases As Needed Below
+        // Test 3
+        // Scenario: Will ServeCustomer show details and remove the customer from the queue? And will it do it in the correct order.
+        // Expected Result: Add 2 customers, Serve 2 customers, print queue after each ServeCustomer to make sure the first customer was served first
+        Console.WriteLine("Test 3");
+        var queue3 = new CustomerService(5);
+        queue3.AddNewCustomer();
+        queue3.AddNewCustomer();
+        Console.WriteLine(queue3);
+        queue3.ServeCustomer();
+        Console.WriteLine(queue3);
+        queue3.ServeCustomer();
+        Console.WriteLine(queue3);
+
+        // Defect(s) found: The code was removing the customers in ServeCustomer before it could store the Customer in a variable. 
+
+        // Test 4
+        // Scenario: Can I serve 0 customers?
+        // Expected Result: The program will give me an error message.
+        Console.WriteLine("Test 4");
+        var queue4 = new CustomerService(5);
+        queue4.ServeCustomer();
+        Console.WriteLine(queue4);
+
+        // Defect(s) found: The code was removing the customers in ServeCustomer before it could store the Customer in a variable. 
     }
 
     private readonly List<Customer> _queue = new();
@@ -67,7 +101,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -88,9 +122,16 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
+        if(_queue.Count <= 0)
+        {
+            Console.WriteLine("There are no customers to serve.");
+            return;
+        }
+        
         var customer = _queue[0];
+        _queue.RemoveAt(0);
         Console.WriteLine(customer);
+        
     }
 
     /// <summary>
