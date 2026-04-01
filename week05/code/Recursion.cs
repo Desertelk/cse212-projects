@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 public static class Recursion
 {
@@ -14,8 +15,13 @@ public static class Recursion
     /// </summary>
     public static int SumSquaresRecursive(int n)
     {
-        // TODO Start Problem 1
-        return 0;
+        if (n <= 0)
+        {
+            return 0;
+        }
+        n = n*n + SumSquaresRecursive(n - 1);
+
+        return n;
     }
 
     /// <summary>
@@ -40,6 +46,20 @@ public static class Recursion
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
         // TODO Start Problem 2
+        if (word.Length == size)
+        {
+            results.Add(word);
+            return;
+        }
+
+        for (int i = 0; i < letters.Length; i++)
+        {
+            char letter = letters[i];
+            string newWord = word + letter;
+
+            string newLetters = letters.Substring(0, i) + letters.Substring(i + 1);
+            PermutationsChoose(results, newLetters, size, newWord);
+        }
     }
 
     /// <summary>
@@ -86,9 +106,19 @@ public static class Recursion
     /// </summary>
     public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null)
     {
+        if (remember == null)
+        {
+            remember = new Dictionary<int, decimal>();
+        }
+
+        if (remember.ContainsKey(s))
+        {
+            return remember[s];
+        }
+
         // Base Cases
         if (s == 0)
-            return 0;
+            return 1;
         if (s == 1)
             return 1;
         if (s == 2)
@@ -99,7 +129,8 @@ public static class Recursion
         // TODO Start Problem 3
 
         // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        decimal ways = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
+        remember[s] = ways;
         return ways;
     }
 
