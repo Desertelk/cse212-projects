@@ -150,6 +150,18 @@ public static class Recursion
     public static void WildcardBinary(string pattern, List<string> results)
     {
         // TODO Start Problem 4
+        if (!pattern.Contains('*'))
+        {
+            results.Add(pattern);
+            return;
+        }
+
+        int index = pattern.IndexOf('*');
+        string left = pattern.Substring(0, index);
+        string right = pattern.Substring(index + 1);
+
+        WildcardBinary(left + "0" + right, results);
+        WildcardBinary(left + "1" + right, results);
     }
 
     /// <summary>
@@ -168,6 +180,28 @@ public static class Recursion
 
         // TODO Start Problem 5
         // ADD CODE HERE
+
+        if(!maze.IsValidMove(currPath, x, y))
+        {
+            return;
+        }
+
+        currPath.Add((x,y));
+
+        if (maze.IsEnd(x, y))
+        {
+            results.Add(currPath.AsString());
+
+            currPath.RemoveAt(currPath.Count - 1);
+            return;
+        }
+
+        SolveMaze(results, maze, x+1, y, currPath);
+        SolveMaze(results, maze, x-1, y, currPath);
+        SolveMaze(results, maze, x, y+1, currPath);
+        SolveMaze(results, maze, x, y-1, currPath);
+
+        currPath.RemoveAt(currPath.Count - 1);
 
         // results.Add(currPath.AsString()); // Use this to add your path to the results array keeping track of complete maze solutions when you find the solution.
     }
